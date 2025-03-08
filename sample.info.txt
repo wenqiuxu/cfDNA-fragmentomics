@@ -1,1 +1,1 @@
-21P02292196_3   21P02292196_3   control zhuhai  /home/xuwenqiu/cfDNA/cloud_download     /home/xuwenqiu/cfDNA
+cfDNA_1   cfDNA_1   CTRL hospital  zhuhai  /home/     /home/cfDNA
