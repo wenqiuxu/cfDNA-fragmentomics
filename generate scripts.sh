@@ -32,7 +32,7 @@ do
   mkdir -p $dir_name/$hospital/cfDNA_features/$disease/$sample_name/split_chr
 
   echo "#####2.1 align pair end#########################################" > $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
-  echo "bwa mem -t 8 ~/reference/GRCh38/GRCh38_bwa/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna $dir_name/$hospital/cleandata/$disease/$sample_name/$sample_name.clean.read1.fq.gz $dir_name/$hospital/cleandata/$disease/$sample_name/$sample_name.clean.read2.fq.gz > $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.sam" >> $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
+  echo "bwa mem -t 8 /home/reference/GRCh38/GRCh38_bwa/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna $dir_name/$hospital/cleandata/$disease/$sample_name/$sample_name.clean.read1.fq.gz $dir_name/$hospital/cleandata/$disease/$sample_name/$sample_name.clean.read2.fq.gz > $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.sam" >> $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
   echo "samtools view -@ 8 -o $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.bam $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.sam" >> $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
   echo "#####2.2 split chromosome###################################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_by_chr.sh
   echo "ulimit -n 4096" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_by_chr.sh
