@@ -113,6 +113,7 @@ do
 
   echo "  Rscript $dir_name/$hospital/cfDNA_features/$disease/$sample_name/split_chr/chr\$chr_name/chr\$chr_name.GRCh38_RNA.Gini.R" >> $dir_name/$hospital/cfDNA_features/$disease/$sample_name/split_chr/cfDNA_features.sh
   echo "" >> $dir_name/$hospital/cfDNA_features/$disease/$sample_name/split_chr/cfDNA_features.sh
+  echo "done" >> $dir_name/$hospital/cfDNA_features/$disease/$sample_name/split_chr/cfDNA_features.sh
 
   ####4. merge cfDNA features#########################################
   mkdir -p $dir_name/$hospital/cfDNA_features/$disease/$sample_name/output
