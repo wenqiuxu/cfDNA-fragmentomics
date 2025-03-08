@@ -11,23 +11,16 @@ do
   bam_dir=${arr[4]}
   dir_name=${arr[5]}
 
-  #####1. extract bam file##########################################
-  IFS=$';'
-  barcodes=(${arr[0]})
-  barcode_num=${#barcodes[@]}
-  bam_file=""
-  for ((i=0; i<barcode_num; i++)){
-    if [ -z $bam_file ]; then
-      bam_file="$bam_dir/${barcodes[$i]}/result_alignment/${barcodes[$i]}.bam"
-    else
-      bam_file="$bam_file $bam_dir/${barcodes[$i]}/result_alignment/${barcodes[$i]}.bam"
-    fi
-  }
-  echo $bam_file
-
-  #####1. split chromosome########################################
+  #####1. pre-processing##########################################
   mkdir -p $dir_name/
   mkdir -p $dir_name/$hospital
+  mkdir -p $dir_name/$hospital/cleandata
+  mkdir -p $dir_name/$hospital/cleandata/$disease
+  mkdir -p $dir_name/$hospital/cleandata/$disease/$sample_name/
+  echo "#####1. pre-processing#########################################" > $dir_name/$hospital/cleandata/$disease/$sample_name/pre_processing.sh
+  echo "SOAPnuke filter -f AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA -r CAACTCCTTGGCTCACAGAACGACATGGCTACGATCCGACTT -1 $dir_name/$hospital/rawdata/$disease/$sample_name/$sample_name.read1.fq.gz -2 $dir_name/$hospital/rawdata/$disease/$sample_name/$sample_name.read2.fq.gz -o $dir_name/$hospital/cleandata/$disease/$sample_name -C $sample_name.clean.read1.fq.gz -D $sample_name.clean.read2.fq.gz" >> $dir_name/$hospital/cleandata/$disease/$sample_name/pre_processing.sh
+  
+  #####2. align pair end#########################################
   mkdir -p $dir_name/$hospital/align_result
   mkdir -p $dir_name/$hospital/align_result/$disease
   mkdir -p $dir_name/$hospital/align_result/$disease/$sample_name
@@ -38,17 +31,17 @@ do
   mkdir -p $dir_name/$hospital/cfDNA_features/$disease/$sample_name
   mkdir -p $dir_name/$hospital/cfDNA_features/$disease/$sample_name/split_chr
 
-
-  echo "#####1. split chromosome###################################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_by_chr.sh
+  echo "#####2.1 align pair end#########################################" > $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
+  echo "bwa mem -t 8 ~/reference/GRCh38/GRCh38_bwa/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna $dir_name/$hospital/cleandata/$disease/$sample_name/$sample_name.clean.read1.fq.gz $dir_name/$hospital/cleandata/$disease/$sample_name/$sample_name.clean.read2.fq.gz > $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.sam" >> $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
+  echo "samtools view -@ 8 -o $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.bam $dir_name/$hospital/align_result/$disease/$sample_name/$sample_name.sam" >> $dir_name/$hospital/align_result/$disease/$sample_name/align.sh
+  echo "#####2.2 split chromosome###################################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_by_chr.sh
   echo "ulimit -n 4096" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_by_chr.sh
   echo "BamDeal modify bamSplit -i $bam_file -o $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_by_chr.sh
-
-  echo "#####2. remove unassemble genome###########################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/rm_unassemble.sh
+  echo "#####2.3 remove unassemble genome###########################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/rm_unassemble.sh
   echo "rm chr[0-9XY]*_*_random.bam chrUn_*.bam" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/rm_unassemble.sh
   echo "mkdir -p tmp/" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/rm_unassemble.sh
   echo "mv chrY.bam UnMap.bam chrM.bam chrEBV.bam tmp/" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/rm_unassemble.sh
-
-  echo "#####2.1. bam filter#######################################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_filter.sh
+  echo "#####2.4 bam filter#######################################" > $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_filter.sh
   echo "for chr_name in {1..22} X" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_filter.sh
   echo "do" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_filter.sh
   echo "  mkdir -p $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/chr\$chr_name/" >> $dir_name/$hospital/align_result/$disease/$sample_name/split_chr/bam_filter.sh 
