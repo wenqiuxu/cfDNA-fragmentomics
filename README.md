@@ -1,7 +1,6 @@
 #1、operation environment
 Linux
 
-
 #2、Usage instructions
 ##1.1 Build script for calculate cfDNA fragmentomics: cfDNA coverage, cfDNA score and Gini coefficients
 bash generate scripts.sh sample.info.txt  ##once it runs successfully, the analysis script will be generated in the corresponding folder.
@@ -68,11 +67,11 @@ export PATH=/home/software/bedtools2-2.29.2/bin:$PATH
 source ~/.bashrc
 
 ##4.5 SOAPnuke
-require: gcc: 4.7 or higher
+require: gcc: 4.7 or higher     
          zlib: 1.2.3.5 or higher
          htslib: 1.9 or higher
          pthread library
-         
+       
 git clone https://github.com/BGI-flexlab/SOAPnuke.git
 cd SOAPnuke
 make
