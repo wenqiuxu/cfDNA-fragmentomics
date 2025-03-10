@@ -140,3 +140,7 @@ vi ~/.bashrc
 export PATH=/home/software/SOAPnuke-SOAPnuke2.1.7:$PATH
 
 source ~/.bashrc
+
+##4.6 R-4.2.2
+
+R packages: DescTools
