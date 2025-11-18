@@ -1,0 +1,1 @@
+bash /code/generate_scripts.sh /code/sample_info.txt
