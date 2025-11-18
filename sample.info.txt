@@ -1,1 +1,1 @@
-cfDNA_1   cfDNA_1   CTRL hospital  zhuhai  /home/     /home/cfDNA
+cfDNA_1  cfDNA_1  CTRL  hospital1  /results  /results
