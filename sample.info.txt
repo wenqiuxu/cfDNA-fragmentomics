@@ -1,1 +1,1 @@
-cfDNA_1  cfDNA_1  CTRL  hospital1  /results  /results
+cfDNA_1  cfDNA_1  CTRL  hospital1  /example  /example
